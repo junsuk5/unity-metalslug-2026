@@ -1,3 +1,4 @@
+using System;
 using FSM;
 using UnityEngine;
 
@@ -89,7 +90,18 @@ public class Player : MonoBehaviour, IPlayerContext
     /// <summary>테스트 전용: 입력을 가짜 입력으로 바꿉니다.</summary>
     internal void SetInput(IPlayerInput input)
     {
+        DisposeInput();
         Input = input;
+    }
+
+    void OnDestroy()
+    {
+        DisposeInput();
+    }
+
+    private void DisposeInput()
+    {
+        (Input as IDisposable)?.Dispose();
     }
 
     private void OnCollisionEnter2D(Collision2D other)

@@ -3,6 +3,8 @@
     "rootNamespace": "",
     "references": [
         "MetalSlug",
+        "Unity.InputSystem",
+        "Unity.InputSystem.TestFramework",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
