@@ -65,7 +65,7 @@ public class Player : MonoBehaviour, IPlayerContext
 
     public void Move(float direction)
     {
-        _motor.Move(direction);
+        _motor.Move(direction, Time.deltaTime);
     }
 
     public void Jump()

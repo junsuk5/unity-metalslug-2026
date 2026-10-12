@@ -23,8 +23,8 @@
 
 ## 3. PlayerMotor 테스트
 
-- [ ] 3.1 `PlayerMotor.Move(direction, deltaTime)`로 바꾸고 `Player.Move`가 `Time.deltaTime`을 넘기도록 한다(design.md D5). 컴파일 확인을 통과시킨다
-- [ ] 3.2 `Assets/Tests/EditMode/PlayerMotorTests.cs`에 D7의 PlayerMotor 케이스(좌우 방향 전환과 크기 유지, `speed × deltaTime` 이동량, `Jump`의 속도 초기화)를 작성하고 EditMode `run_tests`에서 모두 통과하는지 확인한다. 테스트에서 만든 GameObject는 `TearDown`에서 `Object.DestroyImmediate`로 정리한다
+- [x] 3.1 `PlayerMotor.Move(direction, deltaTime)`로 바꾸고 `Player.Move`가 `Time.deltaTime`을 넘기도록 한다(design.md D5). 컴파일 확인을 통과시킨다
+- [x] 3.2 `Assets/Tests/EditMode/PlayerMotorTests.cs`에 D7의 PlayerMotor 케이스(좌우 방향 전환과 크기 유지, `speed × deltaTime` 이동량, `Jump`의 속도 초기화)를 작성하고 EditMode `run_tests`에서 모두 통과하는지 확인한다. 테스트에서 만든 GameObject는 `TearDown`에서 `Object.DestroyImmediate`로 정리한다
 
 ## 4. GroundDetector 테스트
 

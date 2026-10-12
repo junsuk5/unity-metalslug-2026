@@ -22,13 +22,14 @@ public class PlayerMotor
     /// 이동 방향으로 캐릭터를 돌리고 그 방향으로 이동합니다.
     /// </summary>
     /// <param name="direction">좌(-1), 우(1)</param>
-    public void Move(float direction)
+    /// <param name="deltaTime">이번 프레임의 경과 시간(초)</param>
+    public void Move(float direction, float deltaTime)
     {
         Vector3 scale = _transform.localScale;
         scale.x = Mathf.Sign(direction) * Mathf.Abs(scale.x);
         _transform.localScale = scale;
 
-        _transform.Translate(_moveSpeed * Time.deltaTime * new Vector3(direction, 0f, 0f));
+        _transform.Translate(_moveSpeed * deltaTime * new Vector3(direction, 0f, 0f));
     }
 
     public void Jump()
