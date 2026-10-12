@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private const float MoveSpeed = 6.0f;
-    private const float JumpForce = 500f;
+    [SerializeField] private float _moveSpeed = 6.0f;
+    [SerializeField] private float _jumpForce = 500f;
 
     private PlayerAnimator _animator;
-    private Rigidbody2D _rigidbody;
+    private PlayerMotor _motor;
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _gunfireClip;
 
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         _animator = new PlayerAnimator(GetComponent<Animator>());
-        _rigidbody = GetComponent<Rigidbody2D>();
+        _motor = new PlayerMotor(transform, GetComponent<Rigidbody2D>(), _moveSpeed, _jumpForce);
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
         {
@@ -61,17 +61,12 @@ public class Player : MonoBehaviour
 
     public void Move(float direction)
     {
-        Vector3 scale = transform.localScale;
-        scale.x = Mathf.Sign(direction) * Mathf.Abs(scale.x);
-        transform.localScale = scale;
-
-        transform.Translate(MoveSpeed * Time.deltaTime * new Vector3(direction, 0f, 0f));
+        _motor.Move(direction);
     }
 
     public void Jump()
     {
-        _rigidbody.linearVelocity = Vector2.zero;
-        _rigidbody.AddForce(Vector2.up * JumpForce);
+        _motor.Jump();
     }
 
     public void SetWalkAnimation(bool isWalking)

@@ -27,7 +27,7 @@
 
 ## 3. 이동 분리
 
-- [ ] 3.1 `PlayerMotor`(`Move(direction)`, `Jump()`)를 추가하고 `Player.Move/Jump` 본문을 옮긴 뒤, `MoveSpeed`(6)·`JumpForce`(500)를 `Player`의 `[SerializeField]` 필드로 바꿔 생성자로 넘긴다. `unity command eval`로 씬의 Player 컴포넌트 값이 6/500으로 읽히는지, 체크리스트 ①③이 이전과 같은 속도·높이로 동작하는지 확인한다
+- [x] 3.1 `PlayerMotor`(`Move(direction)`, `Jump()`)를 추가하고 `Player.Move/Jump` 본문을 옮긴 뒤, `MoveSpeed`(6)·`JumpForce`(500)를 `Player`의 `[SerializeField]` 필드로 바꿔 생성자로 넘긴다. `unity command eval`로 씬의 Player 컴포넌트 값이 6/500으로 읽히는지, 체크리스트 ①③이 이전과 같은 속도·높이로 동작하는지 확인한다
 
 ## 4. 착지 판정 분리
 
