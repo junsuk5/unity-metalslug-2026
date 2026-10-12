@@ -46,7 +46,7 @@
 ## 7. 정리와 통합 확인
 
 - [x] 7.1 `Player.cs`에 부품 조립(Awake), 상태머신 구동(Update/FixedUpdate), 충돌 위임, `IPlayerContext` 위임 외의 로직이 남지 않았는지 코드로 확인하고 불필요한 `public` 프로퍼티(`StateMachine` 등)를 내부로 숨긴다
-- [ ] 7.2 컴파일 확인으로 Editor가 새 `.cs` 파일의 `.meta`를 생성하게 한 뒤, `git status`로 새 `.cs` 파일마다 `.meta`가 함께 있는지, `Main.unity`·`Player.controller`가 변경되지 않았는지 확인한 뒤 체크리스트 전체를 한 번 더 통과시킨다
+- [x] 7.2 컴파일 확인으로 Editor가 새 `.cs` 파일의 `.meta`를 생성하게 한 뒤, `git status`로 새 `.cs` 파일마다 `.meta`가 함께 있는지, `Main.unity`·`Player.controller`가 변경되지 않았는지 확인한 뒤 체크리스트 전체를 한 번 더 통과시킨다
 
 ## Workflow follow-up
 
