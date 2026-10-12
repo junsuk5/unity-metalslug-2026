@@ -32,8 +32,8 @@
 
 ## 5. 상태 전이 테스트
 
-- [ ] 5.1 `Assets/Tests/EditMode/Fakes/FakePlayerInput.cs`와 `FakePlayerContext.cs`를 design.md D6대로 추가한다(호출 기록, 실제 상태 객체 3개 노출). 컴파일 확인을 통과시킨다
-- [ ] 5.2 `PlayerIdleStateTests.cs`, `PlayerMoveStateTests.cs`, `PlayerJumpStateTests.cs`에 D7의 상태 케이스를 작성하고 EditMode `run_tests`에서 모두 통과하는지 확인한다. 테스트 하나의 `ChangeState` 대상을 일부러 틀리게 바꿔 실패하는지 한 번 확인한 뒤 되돌린다
+- [x] 5.1 `Assets/Tests/EditMode/Fakes/FakePlayerInput.cs`와 `FakePlayerContext.cs`를 design.md D6대로 추가한다(호출 기록, 실제 상태 객체 3개 노출). 컴파일 확인을 통과시킨다
+- [x] 5.2 `PlayerIdleStateTests.cs`, `PlayerMoveStateTests.cs`, `PlayerJumpStateTests.cs`에 D7의 상태 케이스를 작성하고 EditMode `run_tests`에서 모두 통과하는지 확인한다. 테스트 하나의 `ChangeState` 대상을 일부러 틀리게 바꿔 실패하는지 한 번 확인한 뒤 되돌린다
 
 ## 6. Player 통합 테스트
 
