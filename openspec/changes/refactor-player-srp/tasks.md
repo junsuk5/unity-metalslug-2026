@@ -5,6 +5,9 @@
 > **컴파일 확인(이하 "컴파일 확인")**: `unity command recompile` 후 `unity command recompile_status`를 `completed`/`up_to_date`가 될 때까지 확인하고, `failed=true`면 `errors`를 고친 뒤 다시 실행한다.
 >
 > **플레이 확인(이하 "체크리스트")**: unity-cli의 playmode-verification-loop 절차대로 `editor_play` → 프레임 진행 확인 → 콘솔 에러 확인을 한 뒤, 키 입력이 필요한 다음 항목은 오준석님이 실행 중인 에디터에서 직접 조작해 확인한다. 끝나면 `editor_stop`.
+>
+> **확인 방식 변경(1.2 이후 오준석님 결정)**: 2~6단계의 체크리스트는 `eval`로 `Player`의 `IPlayerInput`을 가짜 입력으로 바꿔 주입하고, 위치·스케일·상태 전이·애니메이터 파라미터·`AudioSource` 재생을 읽어 자동 확인한다. 오준석님의 직접 조작 확인은 7.2에서 한 번 한다. 새 Input System 전환은 이번 변경이 끝난 뒤 별도 변경으로 진행한다.
+>
 > ① ←/→로 이동하고 방향에 따라 캐릭터가 좌우 반전된다 ② 키를 떼면 idle 애니메이션 ③ ↑로 점프하고 공중에서 좌우 이동이 된다 ④ 착지하면 입력에 따라 idle/run으로 돌아온다 ⑤ Space로 공격 애니메이션과 gunfire 소리가 나고 끝나면 idle/run으로 돌아온다
 
 ## 0. 작업 브랜치와 에디터 연결 준비
@@ -20,7 +23,7 @@
 
 ## 2. 애니메이터 분리
 
-- [ ] 2.1 `PlayerAnimator`(해시 상수, `SetWalking`, `SetGrounded`, `PlayAttack`)를 추가하고 `Player`의 `_animator.SetBool/SetTrigger` 호출을 모두 위임으로 바꾼 뒤, `"Walk"`, `"Grounded"`, `"attack"` 문자열이 `PlayerAnimator.cs`에만 남았는지 grep으로 확인하고 체크리스트를 통과시킨다
+- [x] 2.1 `PlayerAnimator`(해시 상수, `SetWalking`, `SetGrounded`, `PlayAttack`)를 추가하고 `Player`의 `_animator.SetBool/SetTrigger` 호출을 모두 위임으로 바꾼 뒤, `"Walk"`, `"Grounded"`, `"attack"` 문자열이 `PlayerAnimator.cs`에만 남았는지 grep으로 확인하고 체크리스트를 통과시킨다
 
 ## 3. 이동 분리
 

@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
     private const float MoveSpeed = 6.0f;
     private const float JumpForce = 500f;
 
-    private Animator _animator;
+    private PlayerAnimator _animator;
     private Rigidbody2D _rigidbody;
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _gunfireClip;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _animator = new PlayerAnimator(GetComponent<Animator>());
         _rigidbody = GetComponent<Rigidbody2D>();
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
@@ -76,12 +76,12 @@ public class Player : MonoBehaviour
 
     public void SetWalkAnimation(bool isWalking)
     {
-        _animator.SetBool("Walk", isWalking);
+        _animator.SetWalking(isWalking);
     }
 
     private void Attack()
     {
-        _animator.SetTrigger("attack");
+        _animator.PlayAttack();
 
         if (_gunfireClip != null)
         {
@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
         if (other.collider.CompareTag("Ground"))
         {
             IsGrounded = true;
-            _animator.SetBool("Grounded", true);
+            _animator.SetGrounded(true);
         }
     }
 
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         if (other.collider.CompareTag("Ground"))
         {
             IsGrounded = false;
-            _animator.SetBool("Grounded", false);
+            _animator.SetGrounded(false);
         }
     }
 }
