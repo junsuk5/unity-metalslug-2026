@@ -1,48 +1,94 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+using FSM;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private const float MoveSpeed = 6.0f;
+    private const float JumpForce = 500f;
+
     private Animator _animator;
     private Rigidbody2D _rigidbody;
 
-    private bool _isJump = false;
+    public StateMachine StateMachine { get; private set; }
+    public PlayerIdleState IdleState { get; private set; }
+    public PlayerMoveState MoveState { get; private set; }
+    public PlayerJumpState JumpState { get; private set; }
 
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>좌(-1), 우(1), 입력 없음(0)</summary>
+    public float MoveInput { get; private set; }
+    public bool JumpPressed { get; private set; }
+    public bool IsGrounded { get; private set; }
+
+    void Awake()
     {
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody2D>();
+
+        StateMachine = new StateMachine();
+        IdleState = new PlayerIdleState(this);
+        MoveState = new PlayerMoveState(this);
+        JumpState = new PlayerJumpState(this);
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        StateMachine.Initialize(IdleState);
+    }
+
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            MoveLeft();
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            MoveRight();
-        }
-        else
-        {
-            Idle();
-        }
+        ReadInput();
 
+        StateMachine.Update();
+
+        // 공격은 어느 상태에서든 가능합니다.
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Attack();
         }
+    }
 
-        if (!_isJump && Input.GetKeyDown(KeyCode.UpArrow))
+    void FixedUpdate()
+    {
+        StateMachine.FixedUpdate();
+    }
+
+    private void ReadInput()
+    {
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            _rigidbody.linearVelocity = Vector2.zero;
-            _rigidbody.AddForce(Vector2.up * 500f);
-            _isJump = true;
+            MoveInput = -1f;
         }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            MoveInput = 1f;
+        }
+        else
+        {
+            MoveInput = 0f;
+        }
+
+        JumpPressed = Input.GetKeyDown(KeyCode.UpArrow);
+    }
+
+    public void Move(float direction)
+    {
+        Vector3 scale = transform.localScale;
+        scale.x = Mathf.Sign(direction) * Mathf.Abs(scale.x);
+        transform.localScale = scale;
+
+        transform.Translate(MoveSpeed * Time.deltaTime * new Vector3(direction, 0f, 0f));
+    }
+
+    public void Jump()
+    {
+        _rigidbody.linearVelocity = Vector2.zero;
+        _rigidbody.AddForce(Vector2.up * JumpForce);
+    }
+
+    public void SetWalkAnimation(bool isWalking)
+    {
+        _animator.SetBool("Walk", isWalking);
     }
 
     private void Attack()
@@ -50,39 +96,12 @@ public class Player : MonoBehaviour
         _animator.SetTrigger("attack");
     }
 
-    private void Idle()
-    {
-        _animator.SetBool("Walk", false);
-    }
-
-    private void MoveRight()
-    {
-        Vector3 scale = transform.localScale;
-        scale.x = Mathf.Abs(scale.x);
-        transform.localScale = scale;
-
-        transform.Translate(6.0f * Time.deltaTime * Vector3.right);
-
-        _animator.SetBool("Walk", true);
-    }
-
-    private void MoveLeft()
-    {
-        Vector3 scale = transform.localScale;
-        scale.x = -Mathf.Abs(scale.x);
-        transform.localScale = scale;
-
-        transform.Translate(6.0f * Time.deltaTime * Vector3.left);
-
-        _animator.SetBool("Walk", true);
-    }
-
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.CompareTag("Ground"))
         {
+            IsGrounded = true;
             _animator.SetBool("Grounded", true);
-            _isJump = false;
         }
     }
 
@@ -90,6 +109,7 @@ public class Player : MonoBehaviour
     {
         if (other.collider.CompareTag("Ground"))
         {
+            IsGrounded = false;
             _animator.SetBool("Grounded", false);
         }
     }
