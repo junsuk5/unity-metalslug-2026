@@ -40,11 +40,11 @@
 - [x] 6.1 `Player`에 `internal void SetInput(IPlayerInput)`과 `internal IState CurrentState`를 추가한다(design.md D4). 컴파일 확인을 통과시키고 게임 코드에서 이 멤버를 쓰는 곳이 없는지 grep으로 확인한다
 - [x] 6.2 `Assets/Tests/PlayMode/FakePlayerInput.cs`(프레임 단위 눌림, D6)와 `PlayerPlayModeTests.cs`의 공통 준비를 작성한다: `EditorSceneManager.LoadSceneAsyncInPlayMode`로 `Assets/Scenes/Main.unity`를 불러오고, Player를 찾아 `SetInput`으로 가짜 입력을 주입한 뒤 착지할 때까지(최대 3초) 기다린다. 이동 테스트(오른쪽 1초 → 6 ± 0.35 이동·Move, 놓으면 Idle, 왼쪽 → 좌우 반전)를 작성하고 PlayMode `run_tests`에서 통과하는지 확인한다
 - [x] 6.3 점프 테스트(제자리 점프 상승 높이 2.45 ± 0.15, 착지 후 Idle·`Grounded` true, 공중 오른쪽 유지 시 착지 후 Move)와 공격 테스트(`AudioSource` 재생, 애니메이터 `attack` 상태를 거쳐 복귀)를 추가하고 PlayMode `run_tests`에서 통과하는지 확인한다
-- [ ] 6.4 PlayMode `run_tests`를 3번 연속 실행해 매번 통과하는지(타이밍 때문에 가끔 실패하지 않는지) 확인한다
+- [x] 6.4 PlayMode `run_tests`를 3번 연속 실행해 매번 통과하는지(타이밍 때문에 가끔 실패하지 않는지) 확인한다
 
 ## 7. 통합 확인
 
-- [ ] 7.1 EditMode·PlayMode `run_tests`를 모두 실행해 전부 통과하는지 확인한다. `git status`로 새 `.cs`·`.asmdef`마다 `.meta`가 있는지, `Main.unity`·`Player.controller`·`ProjectSettings/EditorBuildSettings.asset`이 변경되지 않았는지 확인한다
+- [x] 7.1 EditMode·PlayMode `run_tests`를 모두 실행해 전부 통과하는지 확인한다. `git status`로 새 `.cs`·`.asmdef`마다 `.meta`가 있는지, `Main.unity`·`Player.controller`·`ProjectSettings/EditorBuildSettings.asset`이 변경되지 않았는지 확인한다
 
 ## Workflow follow-up
 
