@@ -12,11 +12,11 @@ public class PlayerIdleState : PlayerState
 
     public override void Update()
     {
-        if (player.JumpPressed)
+        if (player.Input.JumpPressed)
         {
             player.StateMachine.ChangeState(player.JumpState);
         }
-        else if (player.MoveInput != 0f)
+        else if (player.Input.Horizontal != 0f)
         {
             player.StateMachine.ChangeState(player.MoveState);
         }

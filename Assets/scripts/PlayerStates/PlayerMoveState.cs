@@ -12,18 +12,18 @@ public class PlayerMoveState : PlayerState
 
     public override void Update()
     {
-        if (player.JumpPressed)
+        if (player.Input.JumpPressed)
         {
             player.StateMachine.ChangeState(player.JumpState);
             return;
         }
 
-        if (player.MoveInput == 0f)
+        if (player.Input.Horizontal == 0f)
         {
             player.StateMachine.ChangeState(player.IdleState);
             return;
         }
 
-        player.Move(player.MoveInput);
+        player.Move(player.Input.Horizontal);
     }
 }

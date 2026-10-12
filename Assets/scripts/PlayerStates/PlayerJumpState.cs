@@ -16,11 +16,11 @@ public class PlayerJumpState : PlayerState
 
     public override void Update()
     {
-        bool isMoving = player.MoveInput != 0f;
+        bool isMoving = player.Input.Horizontal != 0f;
         player.SetWalkAnimation(isMoving);
         if (isMoving)
         {
-            player.Move(player.MoveInput);
+            player.Move(player.Input.Horizontal);
         }
 
         if (!player.IsGrounded)

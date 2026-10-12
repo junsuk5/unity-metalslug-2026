@@ -10,13 +10,13 @@
 ## 0. 작업 브랜치와 에디터 연결 준비
 
 - [x] 0.0 `refactoring` 브랜치에서 작업 브랜치 `refactor/player-srp`를 만들고(`git switch -c refactor/player-srp`) `git branch --show-current`로 전환됐는지 확인한다
-- [ ] 0.1 `unity status`로 이 프로젝트의 Editor가 `ready`인지, `unity command`로 `recompile`·`editor_play`·`eval`이 노출되는지 확인한다. 연결되지 않으면 `unity pipeline list`로 Safe Mode 여부를 확인하고, 패키지가 없으면 오준석님께 확인 후 `unity pipeline install`을 실행한다
-- [ ] 0.2 `unity command set_autotick`을 실행하고 컴파일 확인을 한 번 통과시켜 기준 상태(에러 없음)를 확인한다
+- [x] 0.1 `unity status`로 이 프로젝트의 Editor가 `ready`인지, `unity command`로 `recompile`·`editor_play`·`eval`이 노출되는지 확인한다. 연결되지 않으면 `unity pipeline list`로 Safe Mode 여부를 확인하고, 패키지가 없으면 오준석님께 확인 후 `unity pipeline install`을 실행한다
+- [x] 0.2 `unity command set_autotick`을 실행하고 컴파일 확인을 한 번 통과시켜 기준 상태(에러 없음)를 확인한다
 
 ## 1. 입력 분리
 
-- [ ] 1.1 `Assets/scripts/Player/IPlayerInput.cs`(Horizontal, JumpPressed, AttackPressed)와 `UnityPlayerInput.cs`(←/→, ↑, Space, ← 우선)를 추가하고 컴파일 확인을 통과시킨다
-- [ ] 1.2 `Player`가 `IPlayerInput`을 생성해 사용하도록 바꾸고 `ReadInput()`, `MoveInput`/`JumpPressed` 필드, `Update`의 `Input.GetKeyDown(KeyCode.Space)`를 제거한 뒤, `Player.cs`에 `UnityEngine.Input` 호출이 남지 않았는지 grep으로 확인하고 체크리스트를 통과시킨다
+- [x] 1.1 `Assets/scripts/Player/IPlayerInput.cs`(Horizontal, JumpPressed, AttackPressed)와 `UnityPlayerInput.cs`(←/→, ↑, Space, ← 우선)를 추가하고 컴파일 확인을 통과시킨다
+- [x] 1.2 `Player`가 `IPlayerInput`을 생성해 사용하도록 바꾸고 `ReadInput()`, `MoveInput`/`JumpPressed` 필드, `Update`의 `Input.GetKeyDown(KeyCode.Space)`를 제거한 뒤, `Player.cs`에 `UnityEngine.Input` 호출이 남지 않았는지 grep으로 확인하고 체크리스트를 통과시킨다
 
 ## 2. 애니메이터 분리
 

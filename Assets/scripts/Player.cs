@@ -16,9 +16,7 @@ public class Player : MonoBehaviour
     public PlayerMoveState MoveState { get; private set; }
     public PlayerJumpState JumpState { get; private set; }
 
-    /// <summary>좌(-1), 우(1), 입력 없음(0)</summary>
-    public float MoveInput { get; private set; }
-    public bool JumpPressed { get; private set; }
+    public IPlayerInput Input { get; private set; }
     public bool IsGrounded { get; private set; }
 
     void Awake()
@@ -31,6 +29,8 @@ public class Player : MonoBehaviour
             _audioSource = gameObject.AddComponent<AudioSource>();
             _audioSource.playOnAwake = false;
         }
+
+        Input = new UnityPlayerInput();
 
         StateMachine = new StateMachine();
         IdleState = new PlayerIdleState(this);
@@ -45,12 +45,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        ReadInput();
-
         StateMachine.Update();
 
         // 공격은 어느 상태에서든 가능합니다.
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.AttackPressed)
         {
             Attack();
         }
@@ -59,24 +57,6 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         StateMachine.FixedUpdate();
-    }
-
-    private void ReadInput()
-    {
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            MoveInput = -1f;
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            MoveInput = 1f;
-        }
-        else
-        {
-            MoveInput = 0f;
-        }
-
-        JumpPressed = Input.GetKeyDown(KeyCode.UpArrow);
     }
 
     public void Move(float direction)
