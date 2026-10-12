@@ -18,8 +18,8 @@
 
 ## 2. 테스트 어셈블리
 
-- [ ] 2.1 `Assets/Tests/EditMode/MetalSlug.Tests.EditMode.asmdef`와 `Assets/Tests/PlayMode/MetalSlug.Tests.PlayMode.asmdef`를 design.md D2대로 추가한다(Editor 전용, `MetalSlug`·TestRunner 참조, `nunit.framework.dll`, `UNITY_INCLUDE_TESTS`). 컴파일 확인을 통과시키고 `run_tests`가 두 모드 모두 에러 없이 실행되는지 확인한다(테스트 0개)
-- [ ] 2.2 `Assets/scripts/AssemblyInfo.cs`에 `[assembly: InternalsVisibleTo("MetalSlug.Tests.PlayMode")]`를 추가하고 컴파일 확인을 통과시킨다
+- [x] 2.1 `Assets/Tests/EditMode/MetalSlug.Tests.EditMode.asmdef`와 `Assets/Tests/PlayMode/MetalSlug.Tests.PlayMode.asmdef`를 design.md D2대로 추가한다(Editor 전용, `MetalSlug`·TestRunner 참조, `nunit.framework.dll`, `UNITY_INCLUDE_TESTS`). 컴파일 확인을 통과시키고 `run_tests`가 두 모드 모두 에러 없이 실행되는지 확인한다(테스트 0개)
+- [x] 2.2 `Assets/scripts/AssemblyInfo.cs`에 `[assembly: InternalsVisibleTo("MetalSlug.Tests.PlayMode")]`를 추가하고 컴파일 확인을 통과시킨다
 
 ## 3. PlayerMotor 테스트
 
