@@ -28,7 +28,7 @@
 
 ## 4. GroundDetector 테스트
 
-- [ ] 4.1 `Assets/Tests/EditMode/GroundDetectorTests.cs`에 D7의 GroundDetector 케이스(`Ground` 태그 접촉·이탈 시 IsGrounded와 이벤트 값, 다른 태그 무시)를 작성하고 EditMode `run_tests`에서 모두 통과하는지 확인한다
+- [x] 4.1 `Assets/Tests/EditMode/GroundDetectorTests.cs`에 D7의 GroundDetector 케이스(`Ground` 태그 접촉·이탈 시 IsGrounded와 이벤트 값, 다른 태그 무시)를 작성하고 EditMode `run_tests`에서 모두 통과하는지 확인한다
 
 ## 5. 상태 전이 테스트
 
