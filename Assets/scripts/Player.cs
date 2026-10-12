@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
 
     private Animator _animator;
     private Rigidbody2D _rigidbody;
+    private AudioSource _audioSource;
+    [SerializeField] private AudioClip _gunfireClip;
 
     public StateMachine StateMachine { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
@@ -23,6 +25,12 @@ public class Player : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+        {
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.playOnAwake = false;
+        }
 
         StateMachine = new StateMachine();
         IdleState = new PlayerIdleState(this);
@@ -94,6 +102,11 @@ public class Player : MonoBehaviour
     private void Attack()
     {
         _animator.SetTrigger("attack");
+
+        if (_gunfireClip != null)
+        {
+            _audioSource.PlayOneShot(_gunfireClip);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
