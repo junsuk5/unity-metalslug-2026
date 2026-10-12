@@ -20,6 +20,9 @@ public class Player : MonoBehaviour, IPlayerContext
     public IPlayerInput Input { get; private set; }
     public bool IsGrounded => _groundDetector.IsGrounded;
 
+    /// <summary>테스트 전용: 현재 상태</summary>
+    internal IState CurrentState => _stateMachine.CurrentState;
+
     void Awake()
     {
         _animator = new PlayerAnimator(GetComponent<Animator>());
@@ -81,6 +84,12 @@ public class Player : MonoBehaviour, IPlayerContext
     public void ChangeState(PlayerState next)
     {
         _stateMachine.ChangeState(next);
+    }
+
+    /// <summary>테스트 전용: 입력을 가짜 입력으로 바꿉니다.</summary>
+    internal void SetInput(IPlayerInput input)
+    {
+        Input = input;
     }
 
     private void OnCollisionEnter2D(Collision2D other)

@@ -35,18 +35,20 @@
 - 대안: `Assets/scripts/Player/`에만 asmdef → `Player.cs`와 `PlayerStates/`가 `Assembly-CSharp`에 남아 테스트할 수 없고, 옮기면 다시 나눠야 한다.
 - 대안: 기능별로 여러 asmdef(FSM, Player, Enemy…) → 지금 규모에서는 참조 관리 비용만 늘어난다.
 
-### D2. 테스트 어셈블리는 EditMode·PlayMode 둘로 나누고, 둘 다 Editor 전용으로 둔다
+### D2. 테스트 어셈블리는 EditMode·PlayMode 둘로 나눈다. EditMode만 Editor 전용이다
 
-- `Assets/Tests/EditMode/MetalSlug.Tests.EditMode.asmdef`
-- `Assets/Tests/PlayMode/MetalSlug.Tests.PlayMode.asmdef`
+- `Assets/Tests/EditMode/MetalSlug.Tests.EditMode.asmdef`: `includePlatforms: ["Editor"]`
+- `Assets/Tests/PlayMode/MetalSlug.Tests.PlayMode.asmdef`: `includePlatforms: []`(모든 플랫폼)
 
-둘 다 `MetalSlug`, `UnityEngine.TestRunner`, `UnityEditor.TestRunner`를 참조하고 `nunit.framework.dll`을 precompiled reference로, `UNITY_INCLUDE_TESTS`를 define constraint로 둔다. PlayMode 어셈블리도 `includePlatforms: ["Editor"]`로 둔다. D3에서 `EditorSceneManager`를 쓰기 때문이다.
+둘 다 `MetalSlug`, `UnityEngine.TestRunner`, `UnityEditor.TestRunner`를 참조하고 `nunit.framework.dll`을 precompiled reference로, `UNITY_INCLUDE_TESTS`를 define constraint로 둔다.
 
-- 대안: PlayMode 어셈블리를 모든 플랫폼용으로 → 플레이어 빌드에서 테스트를 돌릴 수 있지만, 그러려면 `Main`을 Build Settings에 넣어야 한다(D3). 지금은 에디터에서만 돌리면 충분하다.
+Unity Test Framework는 Editor 전용 어셈블리의 테스트를 EditMode 테스트로 분류한다. 그래서 PlayMode 어셈블리는 Editor 전용으로 둘 수 없다. 처음에는 둘 다 Editor 전용으로 계획했지만, 구현 중 PlayMode 실행에서 테스트가 0개로 잡혀 이 사실을 확인했다. D3의 `EditorSceneManager` 호출은 `#if UNITY_EDITOR` 안에 두고, 플레이어 빌드에서는 `Assert.Ignore`로 건너뛴다.
+
+- 대안: `Main`을 Build Settings에 넣고 `SceneManager.LoadScene` 사용 → 플레이어 빌드에서도 돌릴 수 있지만 프로젝트 설정이 바뀐다(D3). 오준석님 결정으로 제외했다.
 
 ### D3. PlayMode 테스트는 실제 `Main` 씬을 `EditorSceneManager.LoadSceneAsyncInPlayMode`로 불러온다
 
-Player 조립 버그(이벤트 구독 누락, 수치 전달 오류, 컴포넌트 누락)는 실제 씬 구성에서만 드러난다. 경로(`Assets/Scenes/Main.unity`)로 불러오므로 Build Settings를 바꾸지 않아도 된다.
+Player 조립 버그(이벤트 구독 누락, 수치 전달 오류, 컴포넌트 누락)는 실제 씬 구성에서만 드러난다. 경로(`Assets/Scenes/Main.unity`)로 불러오므로 Build Settings를 바꾸지 않아도 된다. 에디터 전용 API이므로 `#if UNITY_EDITOR`로 감싼다(D2).
 
 - 대안: `SceneManager.LoadScene("Main")` → `Main`을 Build Settings에 추가해야 해서 프로젝트 설정이 바뀐다.
 - 대안: 테스트 코드에서 GameObject·콜라이더·땅을 직접 구성 → 씬과 구성이 달라져 정작 확인하려는 "씬의 Player가 제대로 조립되는가"를 검증하지 못한다.
@@ -97,7 +99,7 @@ EditMode에서는 `Time.deltaTime`이 일정하지 않아 이동량을 확정적
 
 ### D8. 테스트 실행은 실행 중인 Editor의 `run_tests`로 한다
 
-`unity command run_tests -- --mode EditMode` / `-- --mode PlayMode`. `unity test`는 별도 배치 Editor를 띄우므로 같은 프로젝트를 연 Editor와 충돌한다.
+`unity command run_tests -- --mode editor`(동기) / `-- --mode playmode --async_tests true` 후 `unity command test_status` 폴링. PlayMode는 Play 모드 진입 시 도메인 리로드로 HTTP 요청이 끊기므로 비동기로만 실행할 수 있다. `unity test`는 별도 배치 Editor를 띄우므로 같은 프로젝트를 연 Editor와 충돌한다.
 
 ## Risks / Trade-offs
 

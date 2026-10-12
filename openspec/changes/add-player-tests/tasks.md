@@ -4,7 +4,7 @@
 >
 > **컴파일 확인**: `unity command recompile` 후 `unity command recompile_status`가 `completed`/`up_to_date`가 될 때까지 확인하고, `failed=true`면 `errors`를 고친 뒤 다시 실행한다.
 >
-> **테스트 실행**: `unity command run_tests -- --mode EditMode`(또는 `PlayMode`). 실패하면 기대값을 넓히기 전에 원인을 보고한다.
+> **테스트 실행**: EditMode는 `unity command run_tests -- --mode editor`. PlayMode는 `unity command run_tests -- --mode playmode --async_tests true`로 시작한 뒤 `unity command test_status`가 `completed`가 될 때까지 폴링한다(design.md D8). 실패하면 기대값을 넓히기 전에 원인을 보고한다.
 
 ## 0. 작업 브랜치와 에디터 연결 준비
 
@@ -18,7 +18,7 @@
 
 ## 2. 테스트 어셈블리
 
-- [x] 2.1 `Assets/Tests/EditMode/MetalSlug.Tests.EditMode.asmdef`와 `Assets/Tests/PlayMode/MetalSlug.Tests.PlayMode.asmdef`를 design.md D2대로 추가한다(Editor 전용, `MetalSlug`·TestRunner 참조, `nunit.framework.dll`, `UNITY_INCLUDE_TESTS`). 컴파일 확인을 통과시키고 `run_tests`가 두 모드 모두 에러 없이 실행되는지 확인한다(테스트 0개)
+- [x] 2.1 `Assets/Tests/EditMode/MetalSlug.Tests.EditMode.asmdef`와 `Assets/Tests/PlayMode/MetalSlug.Tests.PlayMode.asmdef`를 design.md D2대로 추가한다(EditMode만 Editor 전용, `MetalSlug`·TestRunner 참조, `nunit.framework.dll`, `UNITY_INCLUDE_TESTS`). 컴파일 확인을 통과시키고 `run_tests`가 두 모드 모두 에러 없이 실행되는지 확인한다(테스트 0개)
 - [x] 2.2 `Assets/scripts/AssemblyInfo.cs`에 `[assembly: InternalsVisibleTo("MetalSlug.Tests.PlayMode")]`를 추가하고 컴파일 확인을 통과시킨다
 
 ## 3. PlayerMotor 테스트
@@ -37,8 +37,8 @@
 
 ## 6. Player 통합 테스트
 
-- [ ] 6.1 `Player`에 `internal void SetInput(IPlayerInput)`과 `internal IState CurrentState`를 추가한다(design.md D4). 컴파일 확인을 통과시키고 게임 코드에서 이 멤버를 쓰는 곳이 없는지 grep으로 확인한다
-- [ ] 6.2 `Assets/Tests/PlayMode/FakePlayerInput.cs`(프레임 단위 눌림, D6)와 `PlayerPlayModeTests.cs`의 공통 준비를 작성한다: `EditorSceneManager.LoadSceneAsyncInPlayMode`로 `Assets/Scenes/Main.unity`를 불러오고, Player를 찾아 `SetInput`으로 가짜 입력을 주입한 뒤 착지할 때까지(최대 3초) 기다린다. 이동 테스트(오른쪽 1초 → 6 ± 0.35 이동·Move, 놓으면 Idle, 왼쪽 → 좌우 반전)를 작성하고 PlayMode `run_tests`에서 통과하는지 확인한다
+- [x] 6.1 `Player`에 `internal void SetInput(IPlayerInput)`과 `internal IState CurrentState`를 추가한다(design.md D4). 컴파일 확인을 통과시키고 게임 코드에서 이 멤버를 쓰는 곳이 없는지 grep으로 확인한다
+- [x] 6.2 `Assets/Tests/PlayMode/FakePlayerInput.cs`(프레임 단위 눌림, D6)와 `PlayerPlayModeTests.cs`의 공통 준비를 작성한다: `EditorSceneManager.LoadSceneAsyncInPlayMode`로 `Assets/Scenes/Main.unity`를 불러오고, Player를 찾아 `SetInput`으로 가짜 입력을 주입한 뒤 착지할 때까지(최대 3초) 기다린다. 이동 테스트(오른쪽 1초 → 6 ± 0.35 이동·Move, 놓으면 Idle, 왼쪽 → 좌우 반전)를 작성하고 PlayMode `run_tests`에서 통과하는지 확인한다
 - [ ] 6.3 점프 테스트(제자리 점프 상승 높이 2.45 ± 0.15, 착지 후 Idle·`Grounded` true, 공중 오른쪽 유지 시 착지 후 Move)와 공격 테스트(`AudioSource` 재생, 애니메이터 `attack` 상태를 거쳐 복귀)를 추가하고 PlayMode `run_tests`에서 통과하는지 확인한다
 - [ ] 6.4 PlayMode `run_tests`를 3번 연속 실행해 매번 통과하는지(타이밍 때문에 가끔 실패하지 않는지) 확인한다
 
