@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private PlayerAnimator _animator;
     private PlayerMotor _motor;
     private GroundDetector _groundDetector;
-    private AudioSource _audioSource;
+    private PlayerWeapon _weapon;
     [SerializeField] private AudioClip _gunfireClip;
 
     public StateMachine StateMachine { get; private set; }
@@ -26,12 +26,13 @@ public class Player : MonoBehaviour
         _motor = new PlayerMotor(transform, GetComponent<Rigidbody2D>(), _moveSpeed, _jumpForce);
         _groundDetector = new GroundDetector();
         _groundDetector.GroundedChanged += _animator.SetGrounded;
-        _audioSource = GetComponent<AudioSource>();
-        if (_audioSource == null)
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
         {
-            _audioSource = gameObject.AddComponent<AudioSource>();
-            _audioSource.playOnAwake = false;
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
         }
+        _weapon = new PlayerWeapon(_animator, new PlayerAudio(audioSource, _gunfireClip));
 
         Input = new UnityPlayerInput();
 
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour
         // 공격은 어느 상태에서든 가능합니다.
         if (Input.AttackPressed)
         {
-            Attack();
+            _weapon.Fire();
         }
     }
 
@@ -75,16 +76,6 @@ public class Player : MonoBehaviour
     public void SetWalkAnimation(bool isWalking)
     {
         _animator.SetWalking(isWalking);
-    }
-
-    private void Attack()
-    {
-        _animator.PlayAttack();
-
-        if (_gunfireClip != null)
-        {
-            _audioSource.PlayOneShot(_gunfireClip);
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)

@@ -35,8 +35,8 @@
 
 ## 5. 사운드·공격 분리
 
-- [ ] 5.1 `PlayerAudio`(`PlayGunfire()`, clip이 null이면 무시)를 추가하고, `_gunfireClip` 필드 이름을 유지한 채 생성자로 넘긴다. 컴파일 확인 후 `unity command eval`로 씬의 Player `_gunfireClip`이 여전히 `gunfire` 클립을 가리키는지 확인한다
-- [ ] 5.2 `PlayerWeapon.Fire()`(`PlayAttack` + `PlayGunfire`)를 추가하고 `Player.Update`에서 `StateMachine.Update()` 다음에 `if (input.AttackPressed) weapon.Fire();`로 호출한 뒤 체크리스트 ⑤를 통과시킨다
+- [x] 5.1 `PlayerAudio`(`PlayGunfire()`, clip이 null이면 무시)를 추가하고, `_gunfireClip` 필드 이름을 유지한 채 생성자로 넘긴다. 컴파일 확인 후 `unity command eval`로 씬의 Player `_gunfireClip`이 여전히 `gunfire` 클립을 가리키는지 확인한다
+- [x] 5.2 `PlayerWeapon.Fire()`(`PlayAttack` + `PlayGunfire`)를 추가하고 `Player.Update`에서 `StateMachine.Update()` 다음에 `if (input.AttackPressed) weapon.Fire();`로 호출한 뒤 체크리스트 ⑤를 통과시킨다
 
 ## 6. 상태가 인터페이스에만 의존하게 하기
 
