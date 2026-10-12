@@ -5,14 +5,14 @@ public class Player : MonoBehaviour, IPlayerContext
 {
     [SerializeField] private float _moveSpeed = 6.0f;
     [SerializeField] private float _jumpForce = 500f;
+    [SerializeField] private AudioClip _gunfireClip;
 
     private PlayerAnimator _animator;
     private PlayerMotor _motor;
     private GroundDetector _groundDetector;
     private PlayerWeapon _weapon;
-    [SerializeField] private AudioClip _gunfireClip;
+    private StateMachine _stateMachine;
 
-    public StateMachine StateMachine { get; private set; }
     public PlayerState IdleState { get; private set; }
     public PlayerState MoveState { get; private set; }
     public PlayerState JumpState { get; private set; }
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, IPlayerContext
 
         Input = new UnityPlayerInput();
 
-        StateMachine = new StateMachine();
+        _stateMachine = new StateMachine();
         IdleState = new PlayerIdleState(this);
         MoveState = new PlayerMoveState(this);
         JumpState = new PlayerJumpState(this);
@@ -44,12 +44,12 @@ public class Player : MonoBehaviour, IPlayerContext
 
     void Start()
     {
-        StateMachine.Initialize(IdleState);
+        _stateMachine.Initialize(IdleState);
     }
 
     void Update()
     {
-        StateMachine.Update();
+        _stateMachine.Update();
 
         // 공격은 어느 상태에서든 가능합니다.
         if (Input.AttackPressed)
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour, IPlayerContext
 
     void FixedUpdate()
     {
-        StateMachine.FixedUpdate();
+        _stateMachine.FixedUpdate();
     }
 
     public void Move(float direction)
@@ -80,7 +80,7 @@ public class Player : MonoBehaviour, IPlayerContext
 
     public void ChangeState(PlayerState next)
     {
-        StateMachine.ChangeState(next);
+        _stateMachine.ChangeState(next);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
