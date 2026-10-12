@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     private PlayerAnimator _animator;
     private PlayerMotor _motor;
+    private GroundDetector _groundDetector;
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _gunfireClip;
 
@@ -17,12 +18,14 @@ public class Player : MonoBehaviour
     public PlayerJumpState JumpState { get; private set; }
 
     public IPlayerInput Input { get; private set; }
-    public bool IsGrounded { get; private set; }
+    public bool IsGrounded => _groundDetector.IsGrounded;
 
     void Awake()
     {
         _animator = new PlayerAnimator(GetComponent<Animator>());
         _motor = new PlayerMotor(transform, GetComponent<Rigidbody2D>(), _moveSpeed, _jumpForce);
+        _groundDetector = new GroundDetector();
+        _groundDetector.GroundedChanged += _animator.SetGrounded;
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
         {
@@ -86,19 +89,11 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.collider.CompareTag("Ground"))
-        {
-            IsGrounded = true;
-            _animator.SetGrounded(true);
-        }
+        _groundDetector.OnContactEnter(other.collider);
     }
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.collider.CompareTag("Ground"))
-        {
-            IsGrounded = false;
-            _animator.SetGrounded(false);
-        }
+        _groundDetector.OnContactExit(other.collider);
     }
 }

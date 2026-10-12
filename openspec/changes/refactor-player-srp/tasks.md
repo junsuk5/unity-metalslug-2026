@@ -31,7 +31,7 @@
 
 ## 4. 착지 판정 분리
 
-- [ ] 4.1 `GroundDetector`(`OnContactEnter/Exit(Collider2D)`, `IsGrounded`, `GroundedChanged` 이벤트, `Ground` 태그 판정)를 추가하고, `Player`의 충돌 콜백은 위임만 하며 `GroundedChanged`를 `PlayerAnimator.SetGrounded`에 연결한다. `CompareTag("Ground")`가 `GroundDetector.cs`에만 있는지 확인하고 체크리스트 ③④를 통과시킨다
+- [x] 4.1 `GroundDetector`(`OnContactEnter/Exit(Collider2D)`, `IsGrounded`, `GroundedChanged` 이벤트, `Ground` 태그 판정)를 추가하고, `Player`의 충돌 콜백은 위임만 하며 `GroundedChanged`를 `PlayerAnimator.SetGrounded`에 연결한다. `CompareTag("Ground")`가 `GroundDetector.cs`에만 있는지 확인하고 체크리스트 ③④를 통과시킨다
 
 ## 5. 사운드·공격 분리
 
