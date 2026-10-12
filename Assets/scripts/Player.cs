@@ -1,7 +1,7 @@
 using FSM;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IPlayerContext
 {
     [SerializeField] private float _moveSpeed = 6.0f;
     [SerializeField] private float _jumpForce = 500f;
@@ -13,9 +13,9 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip _gunfireClip;
 
     public StateMachine StateMachine { get; private set; }
-    public PlayerIdleState IdleState { get; private set; }
-    public PlayerMoveState MoveState { get; private set; }
-    public PlayerJumpState JumpState { get; private set; }
+    public PlayerState IdleState { get; private set; }
+    public PlayerState MoveState { get; private set; }
+    public PlayerState JumpState { get; private set; }
 
     public IPlayerInput Input { get; private set; }
     public bool IsGrounded => _groundDetector.IsGrounded;
@@ -73,9 +73,14 @@ public class Player : MonoBehaviour
         _motor.Jump();
     }
 
-    public void SetWalkAnimation(bool isWalking)
+    public void SetWalking(bool isWalking)
     {
         _animator.SetWalking(isWalking);
+    }
+
+    public void ChangeState(PlayerState next)
+    {
+        StateMachine.ChangeState(next);
     }
 
     private void OnCollisionEnter2D(Collision2D other)

@@ -3,22 +3,22 @@
 /// </summary>
 public class PlayerIdleState : PlayerState
 {
-    public PlayerIdleState(Player player) : base(player) { }
+    public PlayerIdleState(IPlayerContext context) : base(context) { }
 
     public override void Enter()
     {
-        player.SetWalkAnimation(false);
+        context.SetWalking(false);
     }
 
     public override void Update()
     {
-        if (player.Input.JumpPressed)
+        if (context.Input.JumpPressed)
         {
-            player.StateMachine.ChangeState(player.JumpState);
+            context.ChangeState(context.JumpState);
         }
-        else if (player.Input.Horizontal != 0f)
+        else if (context.Input.Horizontal != 0f)
         {
-            player.StateMachine.ChangeState(player.MoveState);
+            context.ChangeState(context.MoveState);
         }
     }
 }

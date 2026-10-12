@@ -5,11 +5,11 @@ using FSM;
 /// </summary>
 public abstract class PlayerState : IState
 {
-    protected readonly Player player;
+    protected readonly IPlayerContext context;
 
-    protected PlayerState(Player player)
+    protected PlayerState(IPlayerContext context)
     {
-        this.player = player;
+        this.context = context;
     }
 
     public virtual void Enter() { }

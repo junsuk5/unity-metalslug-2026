@@ -40,8 +40,8 @@
 
 ## 6. 상태가 인터페이스에만 의존하게 하기
 
-- [ ] 6.1 `IPlayerContext`(design.md D3)를 추가하고 `Player`가 구현하게 한다. 각 멤버는 부품 위임만 하는지 확인한다
-- [ ] 6.2 `PlayerState`와 Idle/Move/Jump 상태가 `IPlayerContext`만 받도록 바꾸고 전이를 `context.ChangeState(...)`로 통일한 뒤, `PlayerStates/` 폴더에 `Player`, `StateMachine`, `UnityEngine` 참조가 없는지 grep으로 확인하고 체크리스트 전체를 통과시킨다
+- [x] 6.1 `IPlayerContext`(design.md D3)를 추가하고 `Player`가 구현하게 한다. 각 멤버는 부품 위임만 하는지 확인한다
+- [x] 6.2 `PlayerState`와 Idle/Move/Jump 상태가 `IPlayerContext`만 받도록 바꾸고 전이를 `context.ChangeState(...)`로 통일한 뒤, `PlayerStates/` 폴더에 `Player`, `StateMachine`, `UnityEngine` 참조가 없는지 grep으로 확인하고 체크리스트 전체를 통과시킨다
 
 ## 7. 정리와 통합 확인
 

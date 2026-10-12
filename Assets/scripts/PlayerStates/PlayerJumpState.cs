@@ -6,30 +6,30 @@ public class PlayerJumpState : PlayerState
     // 점프 직후에는 아직 땅에 닿아 있으므로, 한 번 땅을 떠난 뒤에만 착지로 판정합니다.
     private bool _hasLeftGround;
 
-    public PlayerJumpState(Player player) : base(player) { }
+    public PlayerJumpState(IPlayerContext context) : base(context) { }
 
     public override void Enter()
     {
         _hasLeftGround = false;
-        player.Jump();
+        context.Jump();
     }
 
     public override void Update()
     {
-        bool isMoving = player.Input.Horizontal != 0f;
-        player.SetWalkAnimation(isMoving);
+        bool isMoving = context.Input.Horizontal != 0f;
+        context.SetWalking(isMoving);
         if (isMoving)
         {
-            player.Move(player.Input.Horizontal);
+            context.Move(context.Input.Horizontal);
         }
 
-        if (!player.IsGrounded)
+        if (!context.IsGrounded)
         {
             _hasLeftGround = true;
         }
         else if (_hasLeftGround)
         {
-            player.StateMachine.ChangeState(isMoving ? player.MoveState : player.IdleState);
+            context.ChangeState(isMoving ? context.MoveState : context.IdleState);
         }
     }
 }
